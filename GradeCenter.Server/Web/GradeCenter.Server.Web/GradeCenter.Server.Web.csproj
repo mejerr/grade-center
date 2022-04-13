@@ -1,0 +1,35 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <UserSecretsId>aspnet-GradeCenter.Server-BBB373B5-EF3F-4DBB-B8AA-7152CEC275BF</UserSecretsId>
+    <LangVersion>latest</LangVersion>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <CodeAnalysisRuleSet>..\..\Rules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <ItemGroup>
+    <AdditionalFiles Include="..\..\stylecop.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="6.0.2" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="6.0.3" />
+    <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="6.0.3" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="6.0.3" />
+    <PackageReference Include="StyleCop.Analyzers" Version="1.2.0-beta.312" PrivateAssets="all">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.3.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\GradeCenter.Server.Common\GradeCenter.Server.Common.csproj" />
+    <ProjectReference Include="..\..\Data\GradeCenter.Server.Data.Models\GradeCenter.Server.Data.Models.csproj" />
+    <ProjectReference Include="..\..\Data\GradeCenter.Server.Data\GradeCenter.Server.Data.csproj" />
+    <ProjectReference Include="..\..\Services\GradeCenter.Server.Services.Mapping\GradeCenter.Server.Services.Mapping.csproj" />
+    <ProjectReference Include="..\..\Services\GradeCenter.Server.Services\GradeCenter.Server.Services.csproj" />
+    <ProjectReference Include="..\GradeCenter.Server.Web.ViewModels\GradeCenter.Server.Web.ViewModels.csproj" />
+  </ItemGroup>
+</Project>
