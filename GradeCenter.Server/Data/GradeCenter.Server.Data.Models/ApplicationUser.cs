@@ -40,6 +40,10 @@
 
         public virtual Class Class { get; set; }
 
+        public int? SchoolId { get; set; }
+
+        public virtual School School { get; set; }
+
         // Audit info
         public DateTime CreatedOn { get; set; }
 

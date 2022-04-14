@@ -1,7 +1,5 @@
 ﻿namespace GradeCenter.Server.Data.Configurations
 {
-    using System;
-
     using GradeCenter.Server.Data.Models;
 
     using Microsoft.EntityFrameworkCore;
@@ -11,9 +9,6 @@
     {
         public void Configure(EntityTypeBuilder<UserPresence> userPresence)
         {
-            userPresence
-                .HasKey(k => new { k.UserId, k.SubjectId });
-
             userPresence
                 .HasOne(up => up.User)
                 .WithMany(r => r.UsersPresences)

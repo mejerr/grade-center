@@ -15,6 +15,10 @@
         public async Task SeedAsync(GradeCenterDbContext dbContext, IServiceProvider serviceProvider)
         {
             var roleManager = serviceProvider.GetRequiredService<RoleManager<ApplicationRole>>();
+            if (roleManager.Roles.Any())
+            {
+                return;
+            }
 
             await SeedRoleAsync(roleManager, GlobalConstants.Data.Roles.AdministratorRoleName);
             await SeedRoleAsync(roleManager, GlobalConstants.Data.Roles.PrincipalRoleName);

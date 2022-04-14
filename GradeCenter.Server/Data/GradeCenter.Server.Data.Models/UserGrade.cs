@@ -6,7 +6,7 @@
     using GradeCenter.Server.Data.Common.Models;
     using GradeCenter.Server.Data.Models.Enums;
 
-    public class UserGrade : IDeletableEntity, IAuditInfo
+    public class UserGrade : BaseDeletableModel<int>
     {
         [Required]
         public string UserId { get; set; }
@@ -26,13 +26,5 @@
 
         [Required]
         public GradeType GradeType { get; set; }
-
-        public bool IsDeleted { get; set; }
-
-        public DateTime? DeletedOn { get; set; }
-
-        public DateTime CreatedOn { get; set; }
-
-        public DateTime? ModifiedOn { get; set; }
     }
 }

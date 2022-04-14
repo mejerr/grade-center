@@ -26,11 +26,22 @@
             var seeders = new List<ISeeder>
                           {
                               new RolesSeeder(),
+                              new SchoolsSeeder(),
+                              new ClassesSeeder(),
+                              new CurriculumsSeeder(),
+                              new SubjectsSeeder(),
+                              new CurriculumsSubjectsSeeder(),
+                              new UsersSeeder(),
+                              new UsersRelationsSeeder(),
+                              new UsersSubjectsSeeder(),
+                              new UsersGradesSeeder(),
+                              new UsersPresences(),
                           };
 
             foreach (var seeder in seeders)
             {
                 await seeder.SeedAsync(dbContext, serviceProvider);
+
                 await dbContext.SaveChangesAsync();
                 logger?.LogInformation($"Seeder {seeder.GetType().Name} done.");
             }

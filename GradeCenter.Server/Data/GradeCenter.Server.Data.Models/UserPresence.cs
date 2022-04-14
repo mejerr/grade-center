@@ -6,7 +6,7 @@
     using GradeCenter.Server.Data.Common.Models;
     using GradeCenter.Server.Data.Models.Enums;
 
-    public class UserPresence : IDeletableEntity, IAuditInfo
+    public class UserPresence : BaseDeletableModel<int>
     {
         [Required]
         public string UserId { get; set; }
@@ -23,13 +23,5 @@
 
         [Required]
         public PresenceType PresenceType { get; set; }
-
-        public bool IsDeleted { get; set; }
-
-        public DateTime? DeletedOn { get; set; }
-
-        public DateTime CreatedOn { get; set; }
-
-        public DateTime? ModifiedOn { get; set; }
     }
 }

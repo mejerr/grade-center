@@ -12,9 +12,6 @@
         public void Configure(EntityTypeBuilder<UserGrade> userGrade)
         {
             userGrade
-                .HasKey(k => new { k.UserId, k.SubjectId });
-
-            userGrade
                 .HasOne(ug => ug.User)
                 .WithMany(r => r.UsersGrades)
                 .HasForeignKey(ug => ug.UserId)

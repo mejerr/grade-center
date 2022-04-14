@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GradeCenter.Server.Data.Migrations
 {
     [DbContext(typeof(GradeCenterDbContext))]
-    [Migration("20220413233758_CreateInitialDatabase")]
-    partial class CreateInitialDatabase
+    [Migration("20220414205954_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -135,6 +135,9 @@ namespace GradeCenter.Server.Data.Migrations
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("bit");
 
+                    b.Property<int?>("SchoolId")
+                        .HasColumnType("int");
+
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");
 
@@ -158,6 +161,8 @@ namespace GradeCenter.Server.Data.Migrations
                         .IsUnique()
                         .HasDatabaseName("UserNameIndex")
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
+
+                    b.HasIndex("SchoolId");
 
                     b.ToTable("AspNetUsers", (string)null);
                 });
@@ -263,7 +268,7 @@ namespace GradeCenter.Server.Data.Migrations
 
                     b.HasIndex("SubjectId");
 
-                    b.ToTable("CurriculumSubject");
+                    b.ToTable("CurriculumsSubjects");
                 });
 
             modelBuilder.Entity("GradeCenter.Server.Data.Models.School", b =>
@@ -337,11 +342,11 @@ namespace GradeCenter.Server.Data.Migrations
 
             modelBuilder.Entity("GradeCenter.Server.Data.Models.UserGrade", b =>
                 {
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<int>("SubjectId")
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<DateTime>("CreatedOn")
                         .HasColumnType("datetime2");
@@ -364,22 +369,31 @@ namespace GradeCenter.Server.Data.Migrations
                     b.Property<DateTime?>("ModifiedOn")
                         .HasColumnType("datetime2");
 
-                    b.HasKey("UserId", "SubjectId");
+                    b.Property<int>("SubjectId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
 
                     b.HasIndex("IsDeleted");
 
                     b.HasIndex("SubjectId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("UsersGrades");
                 });
 
             modelBuilder.Entity("GradeCenter.Server.Data.Models.UserPresence", b =>
                 {
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<int>("SubjectId")
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<DateTime>("CreatedOn")
                         .HasColumnType("datetime2");
@@ -399,11 +413,20 @@ namespace GradeCenter.Server.Data.Migrations
                     b.Property<int>("PresenceType")
                         .HasColumnType("int");
 
-                    b.HasKey("UserId", "SubjectId");
+                    b.Property<int>("SubjectId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
 
                     b.HasIndex("IsDeleted");
 
                     b.HasIndex("SubjectId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("UsersPresences");
                 });
@@ -584,7 +607,13 @@ namespace GradeCenter.Server.Data.Migrations
                         .HasForeignKey("ClassId")
                         .OnDelete(DeleteBehavior.Restrict);
 
+                    b.HasOne("GradeCenter.Server.Data.Models.School", "School")
+                        .WithMany("Users")
+                        .HasForeignKey("SchoolId");
+
                     b.Navigation("Class");
+
+                    b.Navigation("School");
                 });
 
             modelBuilder.Entity("GradeCenter.Server.Data.Models.Class", b =>
@@ -802,6 +831,8 @@ namespace GradeCenter.Server.Data.Migrations
             modelBuilder.Entity("GradeCenter.Server.Data.Models.School", b =>
                 {
                     b.Navigation("Classes");
+
+                    b.Navigation("Users");
                 });
 
             modelBuilder.Entity("GradeCenter.Server.Data.Models.Subject", b =>
