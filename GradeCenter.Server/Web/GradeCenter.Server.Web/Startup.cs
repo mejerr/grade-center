@@ -1,15 +1,18 @@
 ﻿namespace GradeCenter.Server.Web
 {
     using System.Reflection;
+    using System.Text;
 
     using GradeCenter.Server.Services.Mapping;
     using GradeCenter.Server.Web.Infrastructure;
     using GradeCenter.Server.Web.ViewModels;
 
+    using Microsoft.AspNetCore.Authentication.JwtBearer;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.IdentityModel.Tokens;
 
     public class Startup
     {
@@ -25,6 +28,7 @@
             services
                 .AddDatabase(this.configuration)
                 .AddIdentity()
+                .AddJwtAuthentication(services.GetApplicationSettings(this.configuration))
                 .AddApplicationServices()
                 .AddSwagger()
                 .AddControllers();
