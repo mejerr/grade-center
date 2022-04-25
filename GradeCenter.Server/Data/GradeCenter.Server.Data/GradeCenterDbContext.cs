@@ -97,25 +97,27 @@
             var changedEntries = this.ChangeTracker
                 .Entries()
                 .Where(e =>
-                    e.Entity is IAuditInfo and IDeletableEntity or IAuditInfo
-                    && e.State is EntityState.Added or EntityState.Modified);
+                    ((e.Entity is IDeletableEntity && e.State == EntityState.Deleted)
+                      || (e.Entity is IAuditInfo && (e.State is EntityState.Added or EntityState.Modified))));
 
             foreach (var entry in changedEntries)
             {
-                var entity = (IAuditInfo)entry.Entity;
-                if (entry.State == EntityState.Deleted && entity is IDeletableEntity)
+                if (entry.State == EntityState.Deleted && entry.Entity is IDeletableEntity deletableEntity)
                 {
-                    var deletableEntity = (IDeletableEntity)entry.Entity;
+                    entry.State = EntityState.Unchanged;
                     deletableEntity.DeletedOn = DateTime.UtcNow;
                     deletableEntity.IsDeleted = true;
                 }
-                else if (entry.State == EntityState.Added && entity.CreatedOn == default)
+                else if (entry.Entity is IAuditInfo auditInfoEntity)
                 {
-                    entity.CreatedOn = DateTime.UtcNow;
-                }
-                else
-                {
-                    entity.ModifiedOn = DateTime.UtcNow;
+                    if (entry.State == EntityState.Added && auditInfoEntity.CreatedOn == default)
+                    {
+                        auditInfoEntity.CreatedOn = DateTime.UtcNow;
+                    }
+                    else
+                    {
+                        auditInfoEntity.ModifiedOn = DateTime.UtcNow;
+                    }
                 }
             }
         }
