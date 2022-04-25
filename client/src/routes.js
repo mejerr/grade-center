@@ -1,9 +1,12 @@
 import React, { lazy, Suspense, useEffect } from 'react';
 import { Route, Switch, Redirect, useHistory } from 'react-router-dom';
+import Spinner from './theme-app/shared/Spinner';
 import './theme-app/App.scss';
 import './App.css';
 
-import Spinner from './theme-app/shared/Spinner';
+
+const Login = lazy(() => import('./components/auth/Login'));
+const Register = lazy(() => import('./components/auth/Register'));
 
 const Dashboard = lazy(() => import('./theme-app/dashboard/Dashboard'));
 const Buttons = lazy(() => import('./theme-app/basic-ui/Buttons'));
@@ -15,8 +18,7 @@ const Mdi = lazy(() => import('./theme-app/icons/Mdi'));
 const ChartJs = lazy(() => import('./theme-app/charts/ChartJs'));
 const Error404 = lazy(() => import('./theme-app/error-pages/Error404'));
 const Error500 = lazy(() => import('./theme-app/error-pages/Error500'));
-const Login = lazy(() => import('./theme-app/user-pages/Login'));
-const Register = lazy(() => import('./theme-app/user-pages/Register'));
+
 
 const Routes = (props) => {
   const { isAuthenticated } = props;
@@ -34,28 +36,29 @@ const Routes = (props) => {
 
   let routes = (
     <Switch>
-      <Route path="/dashboard" component={Dashboard}/>
-      <Route path="/basic-ui/buttons" component={Buttons}/>
-      <Route path="/basic-ui/dropdowns" component={Dropdowns}/>
-      <Route path="/basic-ui/typography" component={Typography}/>
-      <Route path="/form-Elements/basic-elements" component={BasicElements}/>
-      <Route path="/tables/basic-table" component={BasicTable}/>
-      <Route path="/icons/mdi" component={Mdi}/>
-      <Route path="/charts/chart-js" component={ChartJs}/>
-      <Route path="/user-pages/login-1" component={Login}/>
-      <Route path="/user-pages/register-1" component={Register}/>
-      <Route path="/error-pages/error-404" component={Error404}/>
-      <Route path="/error-pages/error-500" component={Error500}/>
-      <Route path="/" exact component={Dashboard}/>
-      <Redirect to="/" />
+      <Route path="/user/login" component={Login}/>
+      <Route path="/" exact component={Login}/>
+      <Redirect to="/user/login" />
     </Switch>
   );
 
   if (isAuthenticated) {
     routes = (
       <Switch>
-        <Route path="/dashboard" component={Dashboard} />
-        <Redirect to="/" />
+        <Route path="/dashboard" component={Dashboard}/>
+        <Route path="/basic-ui/buttons" component={Buttons}/>
+        <Route path="/basic-ui/dropdowns" component={Dropdowns}/>
+        <Route path="/basic-ui/typography" component={Typography}/>
+        <Route path="/form-Elements/basic-elements" component={BasicElements}/>
+        <Route path="/tables/basic-table" component={BasicTable}/>
+        <Route path="/icons/mdi" component={Mdi}/>
+        <Route path="/charts/chart-js" component={ChartJs}/>
+        <Route path="/user/login" component={Login}/>
+        <Route path="/user/register" component={Register}/>
+        <Route path="/error-pages/error-404" component={Error404}/>
+        <Route path="/error-pages/error-500" component={Error500}/>
+        <Route path="/" exact component={Dashboard}/>
+        <Redirect to="/dashboard" />
       </Switch>
     );
   }
@@ -68,7 +71,7 @@ const Routes = (props) => {
 };
 
 Routes.defaultProps = {
-  isAuthenticated: false
+  isAuthenticated: true
 };
 
 export default Routes;

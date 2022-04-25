@@ -41,7 +41,7 @@ class Sidebar extends Component {
       { path:'/tables', state: 'tablesMenuOpen' },
       { path:'/icons', state: 'iconsMenuOpen' },
       { path:'/charts', state: 'chartsMenuOpen' },
-      { path:'/user-pages', state: 'userPagesMenuOpen' },
+      { path:'/user', state: 'userPagesMenuOpen' },
       { path:'/error-pages', state: 'errorPagesMenuOpen' },
     ];
 
@@ -205,7 +205,7 @@ class Sidebar extends Component {
               </div>
             </Collapse>
           </li>
-          <li className={ this.isPathActive('/user-pages') ? 'nav-item menu-items active' : 'nav-item menu-items' }>
+          <li className={ this.isPathActive('/user') ? 'nav-item menu-items active' : 'nav-item menu-items' }>
             <div className={ this.state?.userPagesMenuOpen ? 'nav-link menu-expanded' : 'nav-link' } onClick={ () => this.toggleMenuState('userPagesMenuOpen') } data-toggle="collapse">
               <span className="menu-icon">
                 <i className="mdi mdi-security"></i>
@@ -216,8 +216,8 @@ class Sidebar extends Component {
             <Collapse in={ this.state?.userPagesMenuOpen }>
               <div>
                 <ul className="nav flex-column sub-menu">
-                  <li className="nav-item"> <Link className={ this.isPathActive('/user-pages/login-1') ? 'nav-link active' : 'nav-link' } to="/user-pages/login-1"><Trans>Login</Trans></Link></li>
-                  <li className="nav-item"> <Link className={ this.isPathActive('/user-pages/register-1') ? 'nav-link active' : 'nav-link' } to="/user-pages/register-1"><Trans>Register</Trans></Link></li>
+                  <li className="nav-item"> <Link className={ this.isPathActive('/user/login') ? 'nav-link active' : 'nav-link' } to="/user/login"><Trans>Login</Trans></Link></li>
+                  <li className="nav-item"> <Link className={ this.isPathActive('/user/register') ? 'nav-link active' : 'nav-link' } to="/user/register"><Trans>Register</Trans></Link></li>
                 </ul>
               </div>
             </Collapse>

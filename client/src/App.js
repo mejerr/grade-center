@@ -7,21 +7,27 @@ import Sidebar from './theme-app/shared/Sidebar';
 import Navbar from './theme-app/shared/Navbar';
 import Routes from './routes';
 
-const App = () => {
+const App = (props) => {
+  const { isAuthenticated } = props;
+
   return (
-    <div className="container-scroller">
-      <Sidebar/>
+    <div className="container-scroller app-container">
+      {isAuthenticated && <Sidebar/>}
       <div className="container-fluid page-body-wrapper">
-        <Navbar/>
+        {isAuthenticated && <Navbar/>}
         <div className="main-panel">
           <div className="content-wrapper">
             <Routes />
           </div>
-          <Footer/>
+          {isAuthenticated && <Footer/>}
         </div>
       </div>
     </div>
   );
+};
+
+App.defaultProps = {
+  isAuthenticated: true
 };
 
 export default App;
