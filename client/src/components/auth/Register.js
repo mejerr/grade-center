@@ -16,9 +16,6 @@ const Register = () =>  {
         <div className="row w-100 mx-0">
           <div className="col-lg-4 mx-auto">
             <div className="card text-left py-5 px-4 px-sm-5">
-              <div className="brand-logo">
-                <img src={require('../../assets/images/logo.svg')} alt="logo" />
-              </div>
               <h4>Регистриране на потребител</h4>
               <form className="pt-3">
                 <div className="form-group">
