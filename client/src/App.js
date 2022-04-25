@@ -6,6 +6,7 @@ import Footer from './theme-app/shared/Footer';
 import Sidebar from './theme-app/shared/Sidebar';
 import Navbar from './theme-app/shared/Navbar';
 import Routes from './routes';
+import classnames from 'classnames';
 
 const App = (props) => {
   const [openApp, setOpenApp] = useState(false);
@@ -36,7 +37,7 @@ const App = (props) => {
   }
 
   return (
-    <div className="container-scroller app-container">
+    <div className={classnames('container-scroller app-container', { 'opened': openApp})}>
       <div className="change-app-btn" onClick={() => setOpenApp(!openApp)}>Change app</div>
       {app}
     </div>
