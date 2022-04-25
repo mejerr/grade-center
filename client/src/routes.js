@@ -1,22 +1,22 @@
 import React, { lazy, Suspense, useEffect } from 'react';
 import { Route, Switch, Redirect, useHistory } from 'react-router-dom';
-import './app/App.scss';
+import './theme-app/App.scss';
 import './App.css';
 
-import Spinner from './app/shared/Spinner';
+import Spinner from './theme-app/shared/Spinner';
 
-const Dashboard = lazy(() => import('./app/dashboard/Dashboard'));
-const Buttons = lazy(() => import('./app/basic-ui/Buttons'));
-const Dropdowns = lazy(() => import('./app/basic-ui/Dropdowns'));
-const Typography = lazy(() => import('./app/basic-ui/Typography'));
-const BasicElements = lazy(() => import('./app/form-elements/BasicElements'));
-const BasicTable = lazy(() => import('./app/tables/BasicTable'));
-const Mdi = lazy(() => import('./app/icons/Mdi'));
-const ChartJs = lazy(() => import('./app/charts/ChartJs'));
-const Error404 = lazy(() => import('./app/error-pages/Error404'));
-const Error500 = lazy(() => import('./app/error-pages/Error500'));
-const Login = lazy(() => import('./app/user-pages/Login'));
-const Register = lazy(() => import('./app/user-pages/Register'));
+const Dashboard = lazy(() => import('./theme-app/dashboard/Dashboard'));
+const Buttons = lazy(() => import('./theme-app/basic-ui/Buttons'));
+const Dropdowns = lazy(() => import('./theme-app/basic-ui/Dropdowns'));
+const Typography = lazy(() => import('./theme-app/basic-ui/Typography'));
+const BasicElements = lazy(() => import('./theme-app/form-elements/BasicElements'));
+const BasicTable = lazy(() => import('./theme-app/tables/BasicTable'));
+const Mdi = lazy(() => import('./theme-app/icons/Mdi'));
+const ChartJs = lazy(() => import('./theme-app/charts/ChartJs'));
+const Error404 = lazy(() => import('./theme-app/error-pages/Error404'));
+const Error500 = lazy(() => import('./theme-app/error-pages/Error500'));
+const Login = lazy(() => import('./theme-app/user-pages/Login'));
+const Register = lazy(() => import('./theme-app/user-pages/Register'));
 
 const Routes = (props) => {
   const { isAuthenticated } = props;
