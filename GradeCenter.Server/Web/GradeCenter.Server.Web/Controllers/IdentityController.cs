@@ -64,7 +64,7 @@
                 return this.Unauthorized();
             }
 
-            var encryptedToken = this.identityService.GenerateToken(this.appSettings.Secret, user.Id);
+            var encryptedToken = this.identityService.GenerateToken(this.appSettings.Secret, user.Id, user.UserName);
 
             return new
             {
