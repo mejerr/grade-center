@@ -2,6 +2,6 @@
 {
     public interface IIdentityService
     {
-        public string GenerateToken(string secret, string userId);
+        public string GenerateToken(string secret, string userId, string userName);
     }
 }
