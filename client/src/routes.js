@@ -45,6 +45,11 @@ const Routes = (props) => {
   if (isAuthenticated) {
     routes = (
       <Switch>
+        {/* Grade center app routes*/}
+        <Route path="/create/register" component={Register}/>
+        <Route path="/user/login" component={Login}/>
+
+        {/* Themed app routes*/}
         <Route path="/dashboard" component={Dashboard}/>
         <Route path="/basic-ui/buttons" component={Buttons}/>
         <Route path="/basic-ui/dropdowns" component={Dropdowns}/>
