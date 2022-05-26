@@ -29,9 +29,9 @@
         public async Task<T> GetByNumberAndDivisionAsync<T>(int number, string division, int schoolId)
         {
             return await this.dbContext.Classes
-                .Where(s => s.Number == number)
-                .Where(s => s.Division == division)
-                .Where(s => s.SchoolId == schoolId)
+                .Where(s => s.Number == number &&
+                       s.Division == division &&
+                       s.SchoolId == schoolId)
                 .To<T>()
                 .FirstOrDefaultAsync();
         }
@@ -39,8 +39,8 @@
         public async Task<T> GetByNumber<T>(int number, int schoolId)
         {
             return await this.dbContext.Classes
-                .Where(s => s.Number == number)
-                .Where(s => s.SchoolId == schoolId)
+                .Where(s => s.Number == number &&
+                       s.SchoolId == schoolId)
                 .To<T>()
                 .FirstOrDefaultAsync();
         }
