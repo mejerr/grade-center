@@ -92,13 +92,13 @@
 
         public async Task<bool> DeleteAsync(int id)
         {
-            var deleteClass = await this.dbContext.Classes.FirstOrDefaultAsync(s => s.Id == id);
-            if (deleteClass == null)
+            var deleteCurriculum = await this.dbContext.Curriculums.FirstOrDefaultAsync(s => s.Id == id);
+            if (deleteCurriculum == null)
             {
                 return false;
             }
 
-            this.dbContext.Classes.Remove(deleteClass);
+            this.dbContext.Curriculums.Remove(deleteCurriculum);
             await this.dbContext.SaveChangesAsync();
 
             return true;
