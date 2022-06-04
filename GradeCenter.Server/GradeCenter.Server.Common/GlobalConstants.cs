@@ -39,6 +39,12 @@
                 public const int AddressMinLength = 5;
                 public const int AddressMaxLength = 400;
             }
+
+            public class Curriculum
+            {
+                public const int TermLength = 1;
+                public const int ClassIdLength = 1;
+            }
         }
     }
 }
