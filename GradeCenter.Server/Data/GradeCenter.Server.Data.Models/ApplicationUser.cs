@@ -69,5 +69,7 @@
         public virtual ICollection<UserSubject> UsersSubjects { get; set; }
 
         public virtual ICollection<UserPresence> UsersPresences { get; set; }
+
+        public virtual ICollection<CurriculumTeacher> CurriculumsTeachers { get; set; }
     }
 }

@@ -1,4 +1,6 @@
-﻿namespace GradeCenter.Server.Services
+﻿using GradeCenter.Server.Data.Models;
+
+namespace GradeCenter.Server.Services
 {
     using System.Collections.Generic;
     using System.Threading.Tasks;
@@ -15,7 +17,7 @@
 
         public Task<IEnumerable<T>> GetAllAsync<T>();
 
-        public Task<int> CreateAsync(int term, int classId);
+        Task<int> CreateAsyncAsync(int term, int classId, List<Subject> subjects, List<ApplicationUser> users);
 
         public Task<bool> UpdateAsync(int id, int term, int classId);
 

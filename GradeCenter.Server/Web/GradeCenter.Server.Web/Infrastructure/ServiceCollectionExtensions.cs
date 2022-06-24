@@ -64,6 +64,11 @@
         {
             services.AddTransient<IIdentityService, IdentityService>();
             services.AddTransient<ISchoolService, SchoolService>();
+            services.AddTransient<IClassService, ClassService>();
+            services.AddTransient<ICurriculumService, CurriculumService>();
+            services.AddTransient<IUserService, UserService>();
+            services.AddTransient<IGradeService, GradeService>();
+            services.AddTransient<ISubjectService, SubjectService>();
 
             return services;
         }

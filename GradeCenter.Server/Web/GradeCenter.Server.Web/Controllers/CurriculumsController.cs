@@ -33,7 +33,8 @@
                 return this.BadRequest();
             }
 
-            var id = await this.curriculumService.CreateAsync(model.Term, model.ClassId);
+            var id = -1;
+            // var id = await this.curriculumService.CreateAsync(model.Term, model.ClassId);
 
             return this.Created(nameof(this.Create), id);
         }

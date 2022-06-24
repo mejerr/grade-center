@@ -21,5 +21,7 @@
         public int Term { get; set; }
 
         public virtual ICollection<CurriculumSubject> CurriculumsSubjects { get; set; }
+
+        public virtual ICollection<CurriculumTeacher> CurriculumsTeachers { get; set; }
     }
 }
