@@ -36,6 +36,8 @@
 
         public DbSet<CurriculumSubject> CurriculumsSubjects { get; set; }
 
+        public DbSet<CurriculumTeacher> CurriculumsTeachers { get; set; }
+
         public DbSet<UserGrade> UsersGrades { get; set; }
 
         public DbSet<UserSubject> UsersSubjects { get; set; }

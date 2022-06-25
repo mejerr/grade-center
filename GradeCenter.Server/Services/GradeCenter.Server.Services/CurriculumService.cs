@@ -58,18 +58,33 @@
                 .ToListAsync();
         }
 
-        public async Task<int> CreateAsync(int term, int classId)
+        public async Task<int> CreateAsyncAsync(int term, int classId, List<Subject> subjects, List<ApplicationUser> teachers)
         {
-            var addCurriculum = new Curriculum
+            var curriculum = new Curriculum
             {
                 Term = term,
                 ClassId = classId,
             };
 
-            await this.dbContext.Curriculums.AddAsync(addCurriculum);
+            var curriculumsSubjects = subjects.Select(s => new CurriculumSubject
+            {
+                SubjectId = s.Id,
+                Curriculum = curriculum,
+            });
+
+            var curriculumsTeachers = teachers.Select(t => new CurriculumTeacher()
+            {
+                TeacherId = t.Id,
+                Curriculum = curriculum,
+            });
+
+            await this.dbContext.Curriculums.AddAsync(curriculum);
+            await this.dbContext.CurriculumsSubjects.AddRangeAsync(curriculumsSubjects);
+            await this.dbContext.CurriculumsTeachers.AddRangeAsync(curriculumsTeachers);
+
             await this.dbContext.SaveChangesAsync();
 
-            return addCurriculum.Id;
+            return curriculum.Id;
         }
 
         public async Task<bool> UpdateAsync(int id, int term, int classId)
