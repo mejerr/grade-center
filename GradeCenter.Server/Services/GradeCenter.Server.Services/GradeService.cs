@@ -1,18 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using GradeCenter.Server.Data;
-using GradeCenter.Server.Data.Models;
-using GradeCenter.Server.Data.Models.Enums;
-using GradeCenter.Server.Services.Mapping;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
-
-using static GradeCenter.Server.Common.GlobalConstants.Data.Roles;
+﻿using GradeCenter.Server.Web.ViewModels.Grade;
 
 namespace GradeCenter.Server.Services
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Threading.Tasks;
+
+    using GradeCenter.Server.Data;
+    using GradeCenter.Server.Data.Models;
+    using GradeCenter.Server.Data.Models.Enums;
+    using GradeCenter.Server.Services.Mapping;
+    using Microsoft.AspNetCore.Identity;
+    using Microsoft.EntityFrameworkCore;
+
+    using static GradeCenter.Server.Common.GlobalConstants.Data.Roles;
+
     public class GradeService : IGradeService
     {
         private readonly GradeCenterDbContext dbContext;
@@ -119,6 +122,86 @@ namespace GradeCenter.Server.Services
                 .ToListAsync();
 
             return userGrades;
+        }
+
+        public async Task<GradeStatisticsViewModel> GetGradeStatisticsAsync(int? schoolId = null, int? subjectId = null)
+        {
+            var gradeStatistics = new GradeStatisticsViewModel();
+
+            if (schoolId == null && subjectId == null)
+            {
+                return gradeStatistics;
+            }
+
+            var teachers = await this.dbContext.CurriculumsTeachers
+                .Include(ct => ct.Teacher)
+                .ToListAsync();
+
+            var query = Enumerable.Empty<UserGrade>().AsQueryable();
+
+            if (schoolId != null)
+            {
+                query = query.Where(ug => ug.User.SchoolId == schoolId.Value);
+            }
+
+            if (subjectId != null)
+            {
+                query = query.Where(ug => ug.SubjectId == subjectId);
+            }
+
+            gradeStatistics.GradeStatistics = await query
+                .Select(ug => new GradeStatistics()
+                {
+                    Grade = ug.Grade,
+                    GradeType = ug.GradeType,
+                    DateOfGrade = ug.DateOfGrade,
+                    StudentName = ug.User.FullName,
+                    SubjectName = ug.Subject.Name,
+                    TeacherName = teachers
+                        .FirstOrDefault(t => t.Curriculum.ClassId == ug.User.ClassId).Teacher.FullName,
+                })
+                .ToListAsync();
+
+            return gradeStatistics;
+        }
+
+        public async Task<GradeStatisticsViewModel> GetGradeStatisticsByTeacherAsync(string teacherId, int? schoolId = null)
+        {
+            var gradeStatistics = new GradeStatisticsViewModel();
+
+            var teacherQuery = this.dbContext.Users
+                .Where(t => t.Id == teacherId);
+
+            if (schoolId != null)
+            {
+                teacherQuery = teacherQuery.Where(t => t.SchoolId == schoolId.Value);
+            }
+
+            var teacher = await teacherQuery.FirstOrDefaultAsync();
+
+            var gradeQuery = this.dbContext.UsersGrades
+                .Where(ug => teacher.UsersSubjects
+                    .Any(us => us.Subject == ug.Subject
+                               && teacher.CurriculumsTeachers
+                                   .Any(ct => ct.Curriculum.ClassId == ug.User.ClassId)));
+            if (schoolId != null)
+            {
+                gradeQuery = gradeQuery.Where(ug => ug.User.SchoolId == schoolId.Value);
+            }
+
+            gradeStatistics.GradeStatistics = await gradeQuery
+                .Select(ug => new GradeStatistics()
+                {
+                    Grade = ug.Grade,
+                    GradeType = ug.GradeType,
+                    DateOfGrade = ug.DateOfGrade,
+                    StudentName = ug.User.FullName,
+                    SubjectName = ug.Subject.Name,
+                    TeacherName = teacher.FullName,
+                })
+                .ToListAsync();
+
+            return gradeStatistics;
         }
     }
 }

@@ -22,6 +22,7 @@
     <ProjectReference Include="..\..\Data\GradeCenter.Server.Data.Common\GradeCenter.Server.Data.Common.csproj" />
     <ProjectReference Include="..\..\Data\GradeCenter.Server.Data.Models\GradeCenter.Server.Data.Models.csproj" />
     <ProjectReference Include="..\..\Data\GradeCenter.Server.Data\GradeCenter.Server.Data.csproj" />
+    <ProjectReference Include="..\..\Web\GradeCenter.Server.Web.ViewModels\GradeCenter.Server.Web.ViewModels.csproj" />
     <ProjectReference Include="..\GradeCenter.Server.Services.Mapping\GradeCenter.Server.Services.Mapping.csproj" />
   </ItemGroup>
 

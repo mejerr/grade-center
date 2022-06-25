@@ -69,6 +69,7 @@
             services.AddTransient<IUserService, UserService>();
             services.AddTransient<IGradeService, GradeService>();
             services.AddTransient<ISubjectService, SubjectService>();
+            services.AddTransient<IAbsencesService, AbsencesService>();
 
             return services;
         }
