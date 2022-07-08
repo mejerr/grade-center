@@ -36,7 +36,7 @@
                 .FirstOrDefaultAsync();
         }
 
-        public async Task<T> GetByNumber<T>(int number, int schoolId)
+        public async Task<T> GetByNumberAsync<T>(int number, int schoolId)
         {
             return await this.dbContext.Classes
                 .Where(s => s.Number == number &&
@@ -45,7 +45,7 @@
                 .FirstOrDefaultAsync();
         }
 
-        public async Task<T> GetBySchoolId<T>(int schoolId)
+        public async Task<T> GetBySchoolIdAsync<T>(int schoolId)
         {
             return await this.dbContext.Classes
                 .Where(s => s.SchoolId == schoolId)
@@ -92,13 +92,13 @@
 
         public async Task<bool> DeleteAsync(int id)
         {
-            var deleteCurriculum = await this.dbContext.Curriculums.FirstOrDefaultAsync(s => s.Id == id);
-            if (deleteCurriculum == null)
+            var deleteClass = await this.dbContext.Classes.FirstOrDefaultAsync(s => s.Id == id);
+            if (deleteClass == null)
             {
                 return false;
             }
 
-            this.dbContext.Curriculums.Remove(deleteCurriculum);
+            this.dbContext.Classes.Remove(deleteClass);
             await this.dbContext.SaveChangesAsync();
 
             return true;

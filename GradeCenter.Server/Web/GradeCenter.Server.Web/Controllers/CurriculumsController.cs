@@ -19,7 +19,7 @@
             this.curriculumService = curriculumService;
         }
 
-        [Authorize]
+        [Authorize(Roles = "Administrator,Director")]
         [HttpPost]
         public async Task<ActionResult> Create([FromBody] CreateCurriculumInputModel model)
         {
@@ -34,13 +34,13 @@
             }
 
             var id = -1;
-            // var id = await this.curriculumService.CreateAsync(model.Term, model.ClassId);
+            //var id = await this.curriculumService.CreateAsync(model.Term, model.ClassId);
 
             return this.Created(nameof(this.Create), id);
         }
 
         [HttpGet]
-        [Route("{id}")]
+        [Route("curriculum/details/{id}")]
         public async Task<ActionResult<CurriculumViewModel>> Details(int id)
         {
             var result = await this.curriculumService.GetByIdAsync<CurriculumViewModel>(id);
@@ -52,9 +52,9 @@
             return result;
         }
 
-        [Authorize]
+        [Authorize(Roles = "Administrator,Director")]
         [HttpPut]
-        [Route("{id}")]
+        [Route("curriculum/update/{id}")]
         public async Task<ActionResult> Update(int id, [FromBody] UpdateCurriculumInputModel model)
         {
             if (!this.User.IsInRole(AdministratorRoleName))
@@ -76,9 +76,9 @@
             return this.Ok();
         }
 
-        [Authorize]
+        [Authorize(Roles = "Administrator,Director")]
         [HttpDelete]
-        [Route("{id}")]
+        [Route("curriculum/delete/{id}")]
         public async Task<ActionResult> Delete(int id)
         {
             if (!this.User.IsInRole(AdministratorRoleName))

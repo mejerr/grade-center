@@ -19,7 +19,7 @@
             this.schoolService = schoolService;
         }
 
-        [Authorize]
+        [Authorize(Roles = "Administrator,Director")]
         [HttpPost]
         public async Task<ActionResult> Create([FromBody] CreateSchoolInputModel model)
         {
@@ -44,7 +44,7 @@
         }
 
         [HttpGet]
-        [Route("{id}")]
+        [Route("school/details/{id}")]
         public async Task<ActionResult<SchoolViewModel>> Details(int id)
         {
             var result = await this.schoolService.GetByIdAsync<SchoolViewModel>(id);
@@ -56,9 +56,9 @@
             return result;
         }
 
-        [Authorize]
+        [Authorize(Roles = "Administrator,Director")]
         [HttpPut]
-        [Route("{id}")]
+        [Route("school/update/{id}")]
         public async Task<ActionResult> Update(int id, [FromBody] UpdateSchoolInputModel model)
         {
             if (!this.User.IsInRole(AdministratorRoleName))
@@ -80,9 +80,9 @@
             return this.Ok();
         }
 
-        [Authorize]
+        [Authorize(Roles = "Administrator,Director")]
         [HttpDelete]
-        [Route("{id}")]
+        [Route("school/delete/{id}")]
         public async Task<ActionResult> Delete(int id)
         {
             if (!this.User.IsInRole(AdministratorRoleName))

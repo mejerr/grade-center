@@ -11,13 +11,13 @@ namespace GradeCenter.Server.Services
 
         public Task<T> GetByTermAsync<T>(int term);
 
-        public Task<T> GetByClassId<T>(int classId);
+        public Task<T> GetByClassIdAsync<T>(int classId);
 
-        public Task<T> GetByTermAndClassId<T>(int term, int classId);
+        public Task<T> GetByTermAndClassIdAsync<T>(int term, int classId);
 
         public Task<IEnumerable<T>> GetAllAsync<T>();
 
-        Task<int> CreateAsyncAsync(int term, int classId, List<Subject> subjects, List<ApplicationUser> users);
+        Task<int> CreateAsync(int term, int classId, List<Subject> subjects, List<ApplicationUser> users);
 
         public Task<bool> UpdateAsync(int id, int term, int classId);
 

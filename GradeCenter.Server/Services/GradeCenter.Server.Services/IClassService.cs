@@ -9,9 +9,9 @@
 
         public Task<T> GetByNumberAndDivisionAsync<T>(int number, string devision, int schoolId);
 
-        public Task<T> GetByNumber<T>(int number, int schoolId);
+        public Task<T> GetByNumberAsync<T>(int number, int schoolId);
 
-        public Task<T> GetBySchoolId<T>(int schoolId);
+        public Task<T> GetBySchoolIdAsync<T>(int schoolId);
 
         public Task<IEnumerable<T>> GetAllAsync<T>();
 
