@@ -1,6 +1,4 @@
-﻿using GradeCenter.Server.Web.ViewModels.Grade;
-
-namespace GradeCenter.Server.Services
+﻿namespace GradeCenter.Server.Services
 {
     using System;
     using System.Collections.Generic;
@@ -11,6 +9,7 @@ namespace GradeCenter.Server.Services
     using GradeCenter.Server.Data.Models;
     using GradeCenter.Server.Data.Models.Enums;
     using GradeCenter.Server.Services.Mapping;
+    using GradeCenter.Server.Web.ViewModels.Grade;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.EntityFrameworkCore;
 

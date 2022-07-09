@@ -9,35 +9,29 @@
     {
         public IEnumerable<AbsencesStatistics> AbsencesStatistics { get; set; }
 
-        private IEnumerable<AbsencesGroupByUserViewModel> AbsencesGroupedByStudent => this.CalculateMostAbsences(PresenceType.Absent);
-
-        private IEnumerable<AbsencesGroupByUserViewModel> PresencesGroupedByStudent => this.CalculateMostAbsences(PresenceType.Present);
-
-        private IEnumerable<AbsencesGroupByUserViewModel> DelaysGroupedByStudent => this.CalculateMostAbsences(PresenceType.Late);
-
         public int TotalAbsences => this.AbsencesStatistics.Count(a => a.PresenceType == PresenceType.Absent);
 
         public int TotalPresences => this.AbsencesStatistics.Count(a => a.PresenceType == PresenceType.Present);
 
         public int TotalDelays => this.AbsencesStatistics.Count(a => a.PresenceType == PresenceType.Late);
 
-        public int MostAbsences => this.AbsencesGroupedByStudent.Max(a => a.Count);
+        public int MostAbsences => this.GetAbsencesGroupedByStudent().Max(a => a.Count);
 
-        public string StudentNameWithMostAbsences => this.AbsencesGroupedByStudent
+        public string StudentNameWithMostAbsences => this.GetAbsencesGroupedByStudent()
             .OrderByDescending(a => a.Count)
             .FirstOrDefault()
             ?.StudentName;
 
-        public int MostPresences => this.PresencesGroupedByStudent.Max(a => a.Count);
+        public int MostPresences => this.GetPresencesGroupedByStudent().Max(a => a.Count);
 
-        public string StudentNameWithMostPresences => this.PresencesGroupedByStudent
+        public string StudentNameWithMostPresences => this.GetPresencesGroupedByStudent()
             .OrderByDescending(a => a.Count)
             .FirstOrDefault()
             ?.StudentName;
 
-        public int MostDelays => this.DelaysGroupedByStudent.Max(a => a.Count);
+        public int MostDelays => this.GetDelaysGroupedByStudent().Max(a => a.Count);
 
-        public string StudentNameWithMostDelays => this.DelaysGroupedByStudent
+        public string StudentNameWithMostDelays => this.GetDelaysGroupedByStudent()
             .OrderByDescending(a => a.Count)
             .FirstOrDefault()
             ?.StudentName;
@@ -53,6 +47,21 @@
                     Count = group.Count(),
                 })
                 .ToList();
+        }
+
+        private IEnumerable<AbsencesGroupByUserViewModel> GetAbsencesGroupedByStudent()
+        {
+            return this.CalculateMostAbsences(PresenceType.Absent);
+        }
+
+        private IEnumerable<AbsencesGroupByUserViewModel> GetPresencesGroupedByStudent()
+        {
+            return this.CalculateMostAbsences(PresenceType.Present);
+        }
+
+        private IEnumerable<AbsencesGroupByUserViewModel> GetDelaysGroupedByStudent()
+        {
+            return this.CalculateMostAbsences(PresenceType.Late);
         }
     }
 }

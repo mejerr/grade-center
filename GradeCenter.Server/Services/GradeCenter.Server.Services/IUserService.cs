@@ -1,10 +1,10 @@
-﻿using System.Collections.Generic;
-using GradeCenter.Server.Common.Enums;
-using GradeCenter.Server.Data.Models;
-
-namespace GradeCenter.Server.Services
+﻿namespace GradeCenter.Server.Services
 {
+    using System.Collections.Generic;
     using System.Threading.Tasks;
+
+    using GradeCenter.Server.Common.Enums;
+    using GradeCenter.Server.Data.Models;
 
     public interface IUserService
     {
@@ -27,6 +27,10 @@ namespace GradeCenter.Server.Services
         Task<bool> RemoveUserSubjectAsync(string userId, int subjectId);
 
         Task<bool> RemoveParentRelationsAsync(string userId);
+
+        Task<bool> RemoveDependentsAsync(string userSuperiorId, string userInferiorId, string role);
+
+        Task<bool> AddDependentAsync(string userSuperiorId, string userInferiorId, string roleId);
 
         Task<IEnumerable<ApplicationUser>> GetTeachersAsync(int? schoolId = null);
 

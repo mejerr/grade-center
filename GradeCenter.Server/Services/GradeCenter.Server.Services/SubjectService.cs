@@ -1,14 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using GradeCenter.Server.Data;
-using GradeCenter.Server.Services.Mapping;
-using Microsoft.EntityFrameworkCore;
-
-namespace GradeCenter.Server.Services
+﻿namespace GradeCenter.Server.Services
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Text;
+    using System.Threading.Tasks;
+
+    using GradeCenter.Server.Data;
+    using GradeCenter.Server.Services.Mapping;
+    using Microsoft.EntityFrameworkCore;
+
     public class SubjectService : ISubjectService
     {
         private readonly GradeCenterDbContext dbContext;

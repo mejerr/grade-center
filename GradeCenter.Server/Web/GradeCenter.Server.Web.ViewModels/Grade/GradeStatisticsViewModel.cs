@@ -12,6 +12,5 @@
         public decimal MinGrade => this.GradeStatistics.Min(g => g.Grade);
 
         public decimal AverageGrade => this.GradeStatistics.Average(g => g.Grade);
-
     }
 }

@@ -1,9 +1,9 @@
-﻿using GradeCenter.Server.Data.Models;
-
-namespace GradeCenter.Server.Services
+﻿namespace GradeCenter.Server.Services
 {
     using System.Collections.Generic;
     using System.Threading.Tasks;
+
+    using GradeCenter.Server.Data.Models;
 
     public interface ICurriculumService
     {
