@@ -19,8 +19,9 @@
             this.classService = classService;
         }
 
-        [Authorize(Roles = "Administrator,Director")]
+        // [Authorize(Roles = AdministratorRoleName)]
         [HttpPost]
+        [Route("/Create")]
         public async Task<ActionResult> Create([FromBody] CreateClassInputModel model)
         {
             if (!this.User.IsInRole(AdministratorRoleName))
@@ -38,8 +39,9 @@
             return this.Created(nameof(this.Create), id);
         }
 
+        // [Authorize(Roles = $"{AdministratorRoleName},{PrincipalRoleName}")]
         [HttpGet]
-        [Route("class/details/{id}")]
+        [Route("Details/{id}")]
         public async Task<ActionResult<ClassViewModel>> Details(int id)
         {
             var result = await this.classService.GetByIdAsync<ClassViewModel>(id);
@@ -51,9 +53,9 @@
             return result;
         }
 
-        [Authorize(Roles = "Administrator,Director")]
+        // [Authorize(Roles = AdministratorRoleName)]
         [HttpPut]
-        [Route("class/update/{id}")]
+        [Route("Update/{id}")]
         public async Task<ActionResult> Update(int id, [FromBody] UpdateClassInputModel model)
         {
             if (!this.User.IsInRole(AdministratorRoleName))
@@ -75,9 +77,9 @@
             return this.Ok();
         }
 
-        [Authorize(Roles = "Administrator, Director")]
+        // [Authorize(Roles = AdministratorRoleName)]
         [HttpDelete]
-        [Route("class/delete/{id}")]
+        [Route("Delete/{id}")]
         public async Task<ActionResult> Delete(int id)
         {
             if (!this.User.IsInRole(AdministratorRoleName))
@@ -94,7 +96,9 @@
             return this.Ok();
         }
 
+        // [Authorize(Roles = AdministratorRoleName)]
         [HttpGet]
+        [Route("All")]
         public async Task<ActionResult> All()
         {
             return this.Ok(await this.classService.GetAllAsync<ClassViewModel>());
