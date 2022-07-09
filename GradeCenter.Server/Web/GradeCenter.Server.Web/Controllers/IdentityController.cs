@@ -83,7 +83,7 @@
 
         // [Authorize(Roles = AdministratorRoleName)]
         [HttpPost]
-        [Route("/Login")]
+        [Route("/SetRole{userId}/{roleId}")]
         public async Task<ActionResult<object>> SetRole(string userId, string roleId)
         {
             if (userId == null)
@@ -109,7 +109,7 @@
 
         // [Authorize(Roles = AdministratorRoleName)]
         [HttpPut]
-        [Route("/Login")]
+        [Route("/Edit")]
         public async Task<ActionResult<object>> Edit(EditUserDataInputModel model)
         {
             var user = await this.userManager.FindByNameAsync(model.UserName);
@@ -136,7 +136,7 @@
 
         // [Authorize(Roles = AdministratorRoleName)]
         [HttpPost]
-        [Route("/Login")]
+        [Route("/RemoveDependent{userSuperiorId}/{userInferiorId}/{superiorRole}")]
         public async Task<ActionResult<object>> RemoveDependent(string userSuperiorId, string userInferiorId, string superiorRole)
         {
             if (userSuperiorId == null)
@@ -166,7 +166,7 @@
 
         // [Authorize(Roles = AdministratorRoleName)]
         [HttpPost]
-        [Route("/Login")]
+        [Route("/AddDependent{userSuperiorId}/{userInferiorId}/{superiorRole}")]
         public async Task<ActionResult<object>> AddDependent(string userSuperiorId, string userInferiorId, string superiorRole)
         {
             if (userSuperiorId == null)

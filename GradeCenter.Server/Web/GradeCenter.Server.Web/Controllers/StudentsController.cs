@@ -16,7 +16,7 @@
         }
 
         [HttpPost]
-        [Route("/AddToClass")]
+        [Route("/AddToClass{userId}/{classId}")]
         public async Task<ActionResult> AddToClass(string userId, int? classId)
         {
             if (userId == null)
@@ -35,7 +35,7 @@
         }
 
         [HttpPost]
-        [Route("/RemoveFromClass")]
+        [Route("/RemoveFromClass{userId}")]
         public async Task<ActionResult> RemoveFromClass(string userId)
         {
             if (userId == null)
