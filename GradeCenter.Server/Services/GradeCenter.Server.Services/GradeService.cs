@@ -1,6 +1,4 @@
-﻿using GradeCenter.Server.Web.ViewModels.Grade;
-
-namespace GradeCenter.Server.Services
+﻿namespace GradeCenter.Server.Services
 {
     using System;
     using System.Collections.Generic;
@@ -11,6 +9,7 @@ namespace GradeCenter.Server.Services
     using GradeCenter.Server.Data.Models;
     using GradeCenter.Server.Data.Models.Enums;
     using GradeCenter.Server.Services.Mapping;
+    using GradeCenter.Server.Web.ViewModels.Grade;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.EntityFrameworkCore;
 
@@ -29,7 +28,7 @@ namespace GradeCenter.Server.Services
             this.roleManager = roleManager;
         }
 
-        public async Task<bool> AddGradeAsync(decimal grade, string userId, int subjectId, GradeType gradeType, DateTime? dateOfGrade)
+        public async Task<int> AddGradeAsync(decimal grade, string userId, int subjectId, GradeType gradeType, DateTime? dateOfGrade = null)
         {
             var userGrade = new UserGrade()
             {
@@ -43,7 +42,7 @@ namespace GradeCenter.Server.Services
             await this.dbContext.UsersGrades.AddAsync(userGrade);
             await this.dbContext.SaveChangesAsync();
 
-            return true;
+            return userGrade.Id;
         }
 
         public async Task<T> GetUserGradeAsync<T>(int id)
@@ -98,30 +97,37 @@ namespace GradeCenter.Server.Services
             return true;
         }
 
-        public async Task<IEnumerable<T>> GetChildGradesAsync<T>(string parentId, string childId = null)
+        public async Task<GradeStatisticsViewModel> GetChildGradeStatisticsAsync(string parentId, string childId)
         {
-            var parentRole = await this.roleManager.Roles.FirstOrDefaultAsync(r => r.Name == ParentRoleName);
+            var gradeStatistics = new GradeStatisticsViewModel();
 
-            var children = childId != null
-                ? await this.dbContext.Users
-                    .Where(u =>
-                        u.UsersInferiorRelations
-                            .Any(uir => uir.UserInferiorId == childId
-                                        && uir.UserRole == parentRole
-                                        && uir.UserSuperiorId == parentId))
-                    .ToListAsync()
-                : await this.dbContext.Users
-                    .Where(u =>
-                        u.UsersInferiorRelations
-                            .Any(uir => uir.UserSuperiorId == parentId))
-                    .ToListAsync();
-
-            var userGrades = await this.dbContext.UsersGrades
-                .Where(ug => children.Contains(ug.User))
-                .To<T>()
+            var teachers = await this.dbContext.CurriculumsTeachers
+                .Include(ct => ct.Teacher)
                 .ToListAsync();
 
-            return userGrades;
+            var query = this.dbContext.UsersGrades
+                .Where(ug => ug.User.UsersInferiorRelations
+                    .Any(uir => uir.UserSuperiorId == parentId));
+
+            if (childId != null)
+            {
+                query = query.Where(ug => ug.UserId == childId);
+            }
+
+            gradeStatistics.GradeStatistics = await query
+                .Select(ug => new GradeStatistics()
+                {
+                    Grade = ug.Grade,
+                    GradeType = ug.GradeType,
+                    DateOfGrade = ug.DateOfGrade,
+                    StudentName = ug.User.FullName,
+                    SubjectName = ug.Subject.Name,
+                    TeacherName = teachers
+                        .FirstOrDefault(t => t.Curriculum.ClassId == ug.User.ClassId).Teacher.FullName,
+                })
+                .ToListAsync();
+
+            return gradeStatistics;
         }
 
         public async Task<GradeStatisticsViewModel> GetGradeStatisticsAsync(int? schoolId = null, int? subjectId = null)

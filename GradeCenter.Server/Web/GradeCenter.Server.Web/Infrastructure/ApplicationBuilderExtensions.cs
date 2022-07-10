@@ -16,8 +16,8 @@
             using var serviceScope = app.ApplicationServices.CreateScope();
             var dbContext = serviceScope.ServiceProvider.GetRequiredService<GradeCenterDbContext>();
             dbContext.Database.Migrate();
-            new GradeCenterDbContextSeeder().SeedAsync(dbContext, serviceScope.ServiceProvider).GetAwaiter().GetResult();
 
+            // new GradeCenterDbContextSeeder().SeedAsync(dbContext, serviceScope.ServiceProvider).GetAwaiter().GetResult();
             return app;
         }
 

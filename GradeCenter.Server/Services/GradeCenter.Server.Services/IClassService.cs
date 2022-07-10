@@ -5,20 +5,20 @@
 
     public interface IClassService
     {
-        public Task<T> GetByIdAsync<T>(int id);
+        Task<T> GetByIdAsync<T>(int id);
 
-        public Task<T> GetByNumberAndDivisionAsync<T>(int number, string devision, int schoolId);
+        Task<T> GetByNumberAndDivisionAsync<T>(int number, string devision, int schoolId);
 
-        public Task<T> GetByNumberAsync<T>(int number, int schoolId);
+        Task<T> GetByNumberAsync<T>(int number, int schoolId);
 
-        public Task<T> GetBySchoolIdAsync<T>(int schoolId);
+        Task<T> GetBySchoolIdAsync<T>(int schoolId);
 
-        public Task<IEnumerable<T>> GetAllAsync<T>();
+        Task<IEnumerable<T>> GetAllAsync<T>();
 
-        public Task<int> CreateAsync(int number, string devision, int schoolId);
+        Task<int> CreateAsync(int number, string devision, int schoolId);
 
-        public Task<bool> UpdateAsync(int id, int number, string devision);
+        Task<bool> UpdateAsync(int id, int number, string devision);
 
-        public Task<bool> DeleteAsync(int id);
+        Task<bool> DeleteAsync(int id);
     }
 }

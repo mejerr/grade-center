@@ -1,26 +1,27 @@
-﻿using GradeCenter.Server.Data.Models;
-
-namespace GradeCenter.Server.Services
+﻿namespace GradeCenter.Server.Services
 {
     using System.Collections.Generic;
     using System.Threading.Tasks;
 
+    using GradeCenter.Server.Data.Models;
+    using GradeCenter.Server.Web.ViewModels.Curriculums;
+
     public interface ICurriculumService
     {
-        public Task<T> GetByIdAsync<T>(int id);
+        Task<T> GetByIdAsync<T>(int id);
 
-        public Task<T> GetByTermAsync<T>(int term);
+        Task<T> GetByTermAsync<T>(int term);
 
-        public Task<T> GetByClassIdAsync<T>(int classId);
+        Task<T> GetByClassIdAsync<T>(int classId);
 
-        public Task<T> GetByTermAndClassIdAsync<T>(int term, int classId);
+        Task<T> GetByTermAndClassIdAsync<T>(int term, int classId);
 
-        public Task<IEnumerable<T>> GetAllAsync<T>();
+        Task<IEnumerable<T>> GetAllAsync<T>();
 
-        Task<int> CreateAsync(int term, int classId, List<Subject> subjects, List<ApplicationUser> users);
+        Task<int> CreateAsync(int term, int classId, List<SubjectInputModel> subjects, List<TeacherInputModel> teachers);
 
-        public Task<bool> UpdateAsync(int id, int term, int classId);
+        Task<bool> UpdateAsync(int id, int term, int classId);
 
-        public Task<bool> DeleteAsync(int id);
+        Task<bool> DeleteAsync(int id);
     }
 }

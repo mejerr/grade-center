@@ -1,16 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using GradeCenter.Server.Common.Enums;
-using GradeCenter.Server.Services.Mapping;
-
-namespace GradeCenter.Server.Services
+﻿namespace GradeCenter.Server.Services
 {
+    using System;
+    using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
 
+    using GradeCenter.Server.Common.Enums;
     using GradeCenter.Server.Data;
     using GradeCenter.Server.Data.Models;
-
+    using GradeCenter.Server.Services.Mapping;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.EntityFrameworkCore;
 
@@ -140,7 +138,7 @@ namespace GradeCenter.Server.Services
             return await this.userManager.IsInRoleAsync(user, StudentRoleName);
         }
 
-        public async Task<bool> IsIsParentAsync(string userId)
+        public async Task<bool> IsParentAsync(string userId)
         {
             var user = await this.userManager.Users.FirstOrDefaultAsync(u => u.Id == userId);
             if (user == null)
@@ -149,6 +147,22 @@ namespace GradeCenter.Server.Services
             }
 
             return await this.userManager.IsInRoleAsync(user, ParentRoleName);
+        }
+
+        public async Task<bool> IsChildOfParentAsync(string parentId, string childId)
+        {
+            if (!(await this.IsParentAsync(parentId)))
+            {
+                return false;
+            }
+
+            var result = await this.dbContext
+                .UsersRelations
+                .AnyAsync(ur =>
+                    ur.UserSuperiorId == parentId
+                    && ur.UserInferiorId == childId);
+
+            return result;
         }
 
         public async Task<bool> RemoveUserSubjectAsync(string userId, int subjectId)
@@ -183,6 +197,42 @@ namespace GradeCenter.Server.Services
             }
 
             this.dbContext.UsersRelations.RemoveRange(relations);
+            await this.dbContext.SaveChangesAsync();
+
+            return true;
+        }
+
+        public async Task<bool> RemoveDependentsAsync(string userSuperiorId, string userInferiorId, string role)
+        {
+            var relations = await this.dbContext
+                .UsersRelations
+                .Where(u =>
+                    u.UserSuperiorId == userSuperiorId &&
+                    u.UserInferiorId == userInferiorId &&
+                    u.UserRole.Name == role)
+                .ToListAsync();
+
+            if (!relations.Any())
+            {
+                return false;
+            }
+
+            this.dbContext.UsersRelations.RemoveRange(relations);
+            await this.dbContext.SaveChangesAsync();
+
+            return true;
+        }
+
+        public async Task<bool> AddDependentAsync(string userSuperiorId, string userInferiorId, string roleId)
+        {
+            var userRelation = new UserRelation()
+            {
+                UserSuperiorId = userSuperiorId,
+                UserInferiorId = userInferiorId,
+                UserRoleId = roleId,
+            };
+
+            await this.dbContext.UsersRelations.AddAsync(userRelation);
             await this.dbContext.SaveChangesAsync();
 
             return true;
@@ -231,7 +281,7 @@ namespace GradeCenter.Server.Services
             var users = new List<ApplicationUser>();
             foreach (var user in this.userManager.Users)
             {
-                if (await this.IsIsParentAsync(user.Id))
+                if (await this.IsParentAsync(user.Id))
                 {
                     users.Add(user);
                 }

@@ -7,6 +7,7 @@
     using GradeCenter.Server.Data;
     using GradeCenter.Server.Data.Models;
     using GradeCenter.Server.Services.Mapping;
+    using GradeCenter.Server.Web.ViewModels.Curriculums;
     using Microsoft.EntityFrameworkCore;
 
     public class CurriculumService : ICurriculumService
@@ -58,7 +59,7 @@
                 .ToListAsync();
         }
 
-        public async Task<int> CreateAsync(int term, int classId, List<Subject> subjects, List<ApplicationUser> teachers)
+        public async Task<int> CreateAsync(int term, int classId, List<SubjectInputModel> subjects, List<TeacherInputModel> teachers)
         {
             var curriculum = new Curriculum
             {

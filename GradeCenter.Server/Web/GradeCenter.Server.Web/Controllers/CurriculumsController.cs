@@ -19,28 +19,23 @@
             this.curriculumService = curriculumService;
         }
 
-        [Authorize(Roles = "Administrator,Director")]
+        // [Authorize(Roles = AdministratorRoleName)]
         [HttpPost]
+        [Route("Create")]
         public async Task<ActionResult> Create([FromBody] CreateCurriculumInputModel model)
         {
-            if (!this.User.IsInRole(AdministratorRoleName))
-            {
-                return this.Unauthorized();
-            }
-
             if (!this.ModelState.IsValid)
             {
                 return this.BadRequest();
             }
 
-            var id = -1;
-            //var id = await this.curriculumService.CreateAsync(model.Term, model.ClassId);
+            var result = await this.curriculumService.CreateAsync(model.Term, model.ClassId, model.Subjects, model.Teachers);
 
-            return this.Created(nameof(this.Create), id);
+            return this.Created(nameof(this.Create), result);
         }
 
         [HttpGet]
-        [Route("curriculum/details/{id}")]
+        [Route("Details/{id}")]
         public async Task<ActionResult<CurriculumViewModel>> Details(int id)
         {
             var result = await this.curriculumService.GetByIdAsync<CurriculumViewModel>(id);
@@ -52,16 +47,11 @@
             return result;
         }
 
-        [Authorize(Roles = "Administrator,Director")]
+        // [Authorize(Roles = $"{AdministratorRoleName},{PrincipalRoleName}")]
         [HttpPut]
-        [Route("curriculum/update/{id}")]
+        [Route("Update/{id}")]
         public async Task<ActionResult> Update(int id, [FromBody] UpdateCurriculumInputModel model)
         {
-            if (!this.User.IsInRole(AdministratorRoleName))
-            {
-                return this.Unauthorized();
-            }
-
             if (!this.ModelState.IsValid)
             {
                 return this.BadRequest();
@@ -76,16 +66,11 @@
             return this.Ok();
         }
 
-        [Authorize(Roles = "Administrator,Director")]
+        // [Authorize(Roles = $"{AdministratorRoleName},{PrincipalRoleName}")]
         [HttpDelete]
-        [Route("curriculum/delete/{id}")]
+        [Route("Delete/{id}")]
         public async Task<ActionResult> Delete(int id)
         {
-            if (!this.User.IsInRole(AdministratorRoleName))
-            {
-                return this.Unauthorized();
-            }
-
             var isDeleted = await this.curriculumService.DeleteAsync(id);
             if (!isDeleted)
             {
