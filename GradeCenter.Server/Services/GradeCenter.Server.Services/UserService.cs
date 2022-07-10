@@ -138,7 +138,7 @@
             return await this.userManager.IsInRoleAsync(user, StudentRoleName);
         }
 
-        public async Task<bool> IsIsParentAsync(string userId)
+        public async Task<bool> IsParentAsync(string userId)
         {
             var user = await this.userManager.Users.FirstOrDefaultAsync(u => u.Id == userId);
             if (user == null)
@@ -147,6 +147,22 @@
             }
 
             return await this.userManager.IsInRoleAsync(user, ParentRoleName);
+        }
+
+        public async Task<bool> IsChildOfParentAsync(string parentId, string childId)
+        {
+            if (!(await this.IsParentAsync(parentId)))
+            {
+                return false;
+            }
+
+            var result = await this.dbContext
+                .UsersRelations
+                .AnyAsync(ur =>
+                    ur.UserSuperiorId == parentId
+                    && ur.UserInferiorId == childId);
+
+            return result;
         }
 
         public async Task<bool> RemoveUserSubjectAsync(string userId, int subjectId)
@@ -265,7 +281,7 @@
             var users = new List<ApplicationUser>();
             foreach (var user in this.userManager.Users)
             {
-                if (await this.IsIsParentAsync(user.Id))
+                if (await this.IsParentAsync(user.Id))
                 {
                     users.Add(user);
                 }

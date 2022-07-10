@@ -13,13 +13,13 @@
 
         Task<IEnumerable<T>> GetUserGradesAsync<T>(int id);
 
-        Task<bool> AddGradeAsync(decimal grade, string userId, int subjectId, GradeType gradeType, DateTime? dateOfGrade);
+        Task<int> AddGradeAsync(decimal grade, string userId, int subjectId, GradeType gradeType, DateTime? dateOfGrade = null);
 
         Task<bool> RemoveGradeAsync(int id);
 
         Task<bool> EditGradeAsync(int id, decimal grade, GradeType? gradeType = null, DateTime? dateOfGrade = null);
 
-        Task<IEnumerable<T>> GetChildGradesAsync<T>(string parentId, string childId = null);
+        Task<GradeStatisticsViewModel> GetChildGradeStatisticsAsync(string parentId, string childId);
 
         Task<GradeStatisticsViewModel> GetGradeStatisticsAsync(int? schoolId = null, int? subjectId = null);
 

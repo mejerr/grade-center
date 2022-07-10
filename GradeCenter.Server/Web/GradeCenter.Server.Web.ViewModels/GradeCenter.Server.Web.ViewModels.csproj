@@ -23,4 +23,10 @@
     <ProjectReference Include="..\..\Services\GradeCenter.Server.Services.Mapping\GradeCenter.Server.Services.Mapping.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Remove="Subjects\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Subjects\" />
+  </ItemGroup>
 </Project>

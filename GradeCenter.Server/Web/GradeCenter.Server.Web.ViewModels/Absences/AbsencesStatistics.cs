@@ -14,6 +14,8 @@
 
         public string StudentName { get; set; }
 
+        public string TeacherName { get; set; }
+
         public DateTime DateOfClass { get; set; }
 
         public PresenceType PresenceType { get; set; }

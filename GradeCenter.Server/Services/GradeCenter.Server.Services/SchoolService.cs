@@ -7,15 +7,23 @@
     using GradeCenter.Server.Data;
     using GradeCenter.Server.Data.Models;
     using GradeCenter.Server.Services.Mapping;
+    using Microsoft.AspNetCore.Identity;
     using Microsoft.EntityFrameworkCore;
 
     public class SchoolService : ISchoolService
     {
         private readonly GradeCenterDbContext dbContext;
+        private readonly UserManager<ApplicationUser> userManager;
+        private readonly IUserService userService;
 
-        public SchoolService(GradeCenterDbContext dbContext)
+        public SchoolService(
+            GradeCenterDbContext dbContext,
+            UserManager<ApplicationUser> userManager,
+            IUserService userService)
         {
             this.dbContext = dbContext;
+            this.userManager = userManager;
+            this.userService = userService;
         }
 
         public async Task<T> GetByIdAsync<T>(int id)
@@ -88,6 +96,23 @@
         {
             return await this.dbContext.Schools
                 .AnyAsync(s => s.Name.ToLower() == name.ToLower());
+        }
+
+        public async Task<string> SetPrincipalAsync(string userId, int schoolId)
+        {
+            var currentPrincipalId = await this.userService.GetSchoolPrincipalIdAsync(userId, schoolId);
+            var currentPrincipal = await this.userManager.FindByIdAsync(currentPrincipalId);
+
+            currentPrincipal.SchoolId = null;
+            await this.userManager.UpdateAsync(currentPrincipal);
+
+            var newPrincipal = await this.userManager.FindByIdAsync(userId);
+            newPrincipal.SchoolId = schoolId;
+            await this.userManager.UpdateAsync(newPrincipal);
+
+            await this.dbContext.SaveChangesAsync();
+
+            return newPrincipal.Id;
         }
     }
 }

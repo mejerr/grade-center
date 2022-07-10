@@ -83,7 +83,7 @@
 
         // [Authorize(Roles = AdministratorRoleName)]
         [HttpPost]
-        [Route("/SetRole{userId}/{roleId}")]
+        [Route("/SetRole/user/{userId}/role/{roleId}")]
         public async Task<ActionResult<object>> SetRole(string userId, string roleId)
         {
             if (userId == null)
@@ -136,7 +136,7 @@
 
         // [Authorize(Roles = AdministratorRoleName)]
         [HttpPost]
-        [Route("/RemoveDependent{userSuperiorId}/{userInferiorId}/{superiorRole}")]
+        [Route("/RemoveDependent/superior/{userSuperiorId}/inferior/{userInferiorId}/role/{superiorRole}")]
         public async Task<ActionResult<object>> RemoveDependent(string userSuperiorId, string userInferiorId, string superiorRole)
         {
             if (userSuperiorId == null)
@@ -166,7 +166,7 @@
 
         // [Authorize(Roles = AdministratorRoleName)]
         [HttpPost]
-        [Route("/AddDependent{userSuperiorId}/{userInferiorId}/{superiorRole}")]
+        [Route("/AddDependent/superior/{userSuperiorId}/inferior/{userInferiorId}/role/{superiorRole}")]
         public async Task<ActionResult<object>> AddDependent(string userSuperiorId, string userInferiorId, string superiorRole)
         {
             if (userSuperiorId == null)

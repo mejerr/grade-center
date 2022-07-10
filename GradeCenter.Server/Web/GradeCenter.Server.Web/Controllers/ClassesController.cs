@@ -24,11 +24,6 @@
         [Route("/Create")]
         public async Task<ActionResult> Create([FromBody] CreateClassInputModel model)
         {
-            if (!this.User.IsInRole(AdministratorRoleName))
-            {
-                return this.Unauthorized();
-            }
-
             if (!this.ModelState.IsValid)
             {
                 return this.BadRequest();
@@ -58,11 +53,6 @@
         [Route("Update/{id}")]
         public async Task<ActionResult> Update(int id, [FromBody] UpdateClassInputModel model)
         {
-            if (!this.User.IsInRole(AdministratorRoleName))
-            {
-                return this.Unauthorized();
-            }
-
             if (!this.ModelState.IsValid)
             {
                 return this.BadRequest();
@@ -82,11 +72,6 @@
         [Route("Delete/{id}")]
         public async Task<ActionResult> Delete(int id)
         {
-            if (!this.User.IsInRole(AdministratorRoleName))
-            {
-                return this.Unauthorized();
-            }
-
             var isDeleted = await this.classService.DeleteAsync(id);
             if (!isDeleted)
             {

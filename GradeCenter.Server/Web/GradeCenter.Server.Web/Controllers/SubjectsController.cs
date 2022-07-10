@@ -1,40 +1,40 @@
 ﻿namespace GradeCenter.Server.Web.Controllers
 {
+    using System;
     using System.Threading.Tasks;
 
     using GradeCenter.Server.Services;
-    using GradeCenter.Server.Web.ViewModels.School;
-
+    using GradeCenter.Server.Web.ViewModels.Subjects;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
 
     using static GradeCenter.Server.Common.GlobalConstants.Data.Roles;
 
-    public class SchoolsController : ApiController
+    public class SubjectsController : ApiController
     {
-        private readonly ISchoolService schoolService;
+        private readonly ISubjectService subjectService;
 
-        public SchoolsController(ISchoolService schoolService)
+        public SubjectsController(ISubjectService subjectService)
         {
-            this.schoolService = schoolService;
+            this.subjectService = subjectService;
         }
 
         // [Authorize(Roles = AdministratorRoleName)]
         [HttpPost]
         [Route("Create")]
-        public async Task<ActionResult> Create([FromBody] CreateSchoolInputModel model)
+        public async Task<ActionResult> Create([FromBody] CreateSubjectInputModel model)
         {
             if (!this.ModelState.IsValid)
             {
                 return this.BadRequest();
             }
 
-            if (await this.schoolService.HasSchoolWithNameAsync(model.Name))
+            if (await this.subjectService.HasSubjectWithNameAsync(model.Name))
             {
                 return this.BadRequest();
             }
 
-            var id = await this.schoolService.CreateAsync(model.Name, model.Address);
+            var id = await this.subjectService.CreateAsync(model.Name);
 
             return this.Created(nameof(this.Create), id);
         }
@@ -42,9 +42,9 @@
         // [Authorize(Roles = $"{AdministratorRoleName},{PrincipalRoleName}")]
         [HttpGet]
         [Route("Details/{id}")]
-        public async Task<ActionResult<SchoolViewModel>> Details(int id)
+        public async Task<ActionResult<SubjectViewModel>> Details(int id)
         {
-            var result = await this.schoolService.GetByIdAsync<SchoolViewModel>(id);
+            var result = await this.subjectService.GetByIdAsync<SubjectViewModel>(id);
             if (result == null)
             {
                 return this.NotFound();
@@ -56,14 +56,14 @@
         // [Authorize(Roles = AdministratorRoleName)]
         [HttpPut]
         [Route("Update/{id}")]
-        public async Task<ActionResult> Update(int id, [FromBody] UpdateSchoolInputModel model)
+        public async Task<ActionResult> Update(int id, [FromBody] EditSubjectInputModel model)
         {
             if (!this.ModelState.IsValid)
             {
                 return this.BadRequest();
             }
 
-            var isUpdated = await this.schoolService.UpdateAsync(id, model.Name, model.Address);
+            var isUpdated = await this.subjectService.UpdateAsync(id, model.Name);
             if (!isUpdated)
             {
                 return this.BadRequest();
@@ -77,7 +77,7 @@
         [Route("Delete/{id}")]
         public async Task<ActionResult> Delete(int id)
         {
-            var isDeleted = await this.schoolService.DeleteAsync(id);
+            var isDeleted = await this.subjectService.DeleteAsync(id);
             if (!isDeleted)
             {
                 return this.BadRequest();
@@ -91,22 +91,34 @@
         [Route("All")]
         public async Task<ActionResult> All()
         {
-            return this.Ok(await this.schoolService.GetAllAsync<SchoolViewModel>());
+            return this.Ok(await this.subjectService.GetSubjectsAsync<SubjectViewModel>());
+        }
+
+        // [Authorize(Roles = $"{AdministratorRoleName},{PrincipalRoleName}")]
+        [HttpGet]
+        [Route("TeacherSubjects/{teacherId}")]
+        public async Task<ActionResult> GetTeacherSubjects(string teacherId)
+        {
+            return this.Ok(await this.subjectService.GetSubjectsByTeacherIdAsync<SubjectViewModel>(teacherId));
         }
 
         // [Authorize(Roles = AdministratorRoleName)]
-        [HttpPost]
-        [Route("SetPrincipal/userId/{userId}/schoolId/{schoolId}")]
-        public async Task<ActionResult> SetPrincipal(string userId, int schoolId)
+        [HttpPut]
+        [Route("EditTeacherSubjects/{id}")]
+        public async Task<ActionResult> EditTeacherSubjects(string teacherId, [FromBody] EditTeacherSubjectsInputModel model)
         {
-            if (userId == null)
+            if (!this.ModelState.IsValid)
             {
                 return this.BadRequest();
             }
 
-            var result = await this.schoolService.SetPrincipalAsync(userId, schoolId);
+            var isUpdated = await this.subjectService.EditTeacherSubjectsAsync(teacherId, model);
+            if (!isUpdated)
+            {
+                return this.BadRequest();
+            }
 
-            return this.Ok(result);
+            return this.Ok();
         }
     }
 }

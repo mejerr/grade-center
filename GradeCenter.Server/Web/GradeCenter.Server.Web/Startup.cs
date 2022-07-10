@@ -43,10 +43,10 @@
                 .UseExceptionHandling(env)
                 .UserSwaggerUI()
                 .UseRouting()
-                .UseCors(options => options
-                    .AllowAnyOrigin()
-                    .AllowAnyHeader()
-                    .AllowAnyMethod())
+                //.UseCors(options => options
+                    //.AllowAnyOrigin()
+                    //.AllowAnyHeader()
+                    //.AllowAnyMethod())
                 .UseAuthentication()
                 .UseAuthorization()
                 .UseEndpoints();

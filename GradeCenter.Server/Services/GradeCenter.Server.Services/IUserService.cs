@@ -22,7 +22,9 @@
 
         Task<bool> IsStudentAsync(string userId);
 
-        Task<bool> IsIsParentAsync(string userId);
+        Task<bool> IsParentAsync(string userId);
+
+        Task<bool> IsChildOfParentAsync(string parentId, string childId);
 
         Task<bool> RemoveUserSubjectAsync(string userId, int subjectId);
 
