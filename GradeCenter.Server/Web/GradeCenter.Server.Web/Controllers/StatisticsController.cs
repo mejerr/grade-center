@@ -35,7 +35,7 @@
             this.roleManager = roleManager;
         }
 
-        // [Authorize(Roles = $"{PrincipalRoleName},{AdministratorRoleName}")]
+        [Authorize(Roles = $"{PrincipalRoleName},{AdministratorRoleName}")]
         [HttpGet]
         [Route("GradeStatistics/schoolId/{schoolId}/teacherId/{teacherId}/subjectId/{subjectId}")]
         public async Task<ActionResult> GetGradeStatistics(
@@ -64,7 +64,7 @@
             return this.Ok(result);
         }
 
-        // [Authorize(Roles = $"{PrincipalRoleName},{AdministratorRoleName}")]
+        [Authorize(Roles = $"{PrincipalRoleName},{AdministratorRoleName}")]
         [HttpGet]
         [Route("AbsencesStatistics/schoolId/{schoolId}/teacherId/{teacherId}/subjectId/{subjectId}")]
         public async Task<ActionResult> GetAbsencesStatistics(

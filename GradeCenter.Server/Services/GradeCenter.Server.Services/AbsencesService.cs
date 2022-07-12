@@ -47,7 +47,11 @@
 
         public async Task<bool> EditAbsenceAsync(int userPresenceId, PresenceType? presenceType, DateTime? dateOfClass = null)
         {
-            var userPresence = await this.GetUserPresenceAsync<UserPresence>(userPresenceId);
+            var userPresence = await this.dbContext
+                .UsersPresences
+                .IgnoreQueryFilters()
+                .Where(ug => ug.Id == userPresenceId)
+                .FirstOrDefaultAsync();
 
             if (userPresence == null)
             {
@@ -65,7 +69,10 @@
 
         public async Task<bool> RemoveAbsenceAsync(int id)
         {
-            var userPresence = await this.GetUserPresenceAsync<UserPresence>(id);
+            var userPresence = await this.dbContext
+                .UsersPresences
+                .Where(ug => ug.Id == id)
+                .FirstOrDefaultAsync();
 
             if (userPresence == null)
             {

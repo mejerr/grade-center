@@ -31,10 +31,10 @@
             this.userManager = userManager;
         }
 
-        // [Authorize(Roles = ParentRoleName)]
+        [Authorize(Roles = ParentRoleName)]
         [HttpGet]
-        [Route("ChildPresences/{childId}")]
-        public async Task<ActionResult> ChildPresences(string childId)
+        [Route("ChildPresences/{childId?}")]
+        public async Task<ActionResult> ChildPresences(string childId = null)
         {
             var userId = this.userManager.GetUserId(this.User);
 
@@ -53,9 +53,9 @@
             return this.Ok(result);
         }
 
-        // [Authorize(Roles = ParentRoleName)]
+        [Authorize(Roles = ParentRoleName)]
         [HttpGet]
-        [Route("ChildGrades/{childId}")]
+        [Route("ChildGrades/{childId?}")]
         public async Task<ActionResult> ChildGrades(string childId)
         {
             var userId = this.userManager.GetUserId(this.User);

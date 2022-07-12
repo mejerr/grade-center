@@ -65,7 +65,10 @@
 
         public async Task<bool> RemoveGradeAsync(int id)
         {
-            var userGrade = await this.GetUserGradeAsync<UserGrade>(id);
+            var userGrade = await this.dbContext
+                .UsersGrades
+                .Where(ug => ug.Id == id)
+                .FirstOrDefaultAsync();
 
             if (userGrade == null)
             {
@@ -80,7 +83,10 @@
 
         public async Task<bool> EditGradeAsync(int id, decimal grade, GradeType? gradeType = null, DateTime? dateOfGrade = null)
         {
-            var userGrade = await this.GetUserGradeAsync<UserGrade>(id);
+            var userGrade = await this.dbContext
+                .UsersGrades
+                .Where(ug => ug.Id == id)
+                .FirstOrDefaultAsync();
 
             if (userGrade == null)
             {

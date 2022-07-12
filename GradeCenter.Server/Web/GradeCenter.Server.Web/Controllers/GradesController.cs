@@ -18,7 +18,7 @@
             this.gradeService = gradeService;
         }
 
-        // [Authorize(Roles = $"{AdministratorRoleName},{PrincipalRoleName},{TeacherRoleName}")]
+        [Authorize(Roles = $"{AdministratorRoleName},{PrincipalRoleName},{TeacherRoleName}")]
         [HttpPost]
         [Route("SetGrade")]
         public async Task<ActionResult> SetGrade([FromBody] GradeInputModel model)
@@ -34,7 +34,7 @@
             return this.Created(nameof(this.SetGrade), id);
         }
 
-        // [Authorize(Roles = $"{AdministratorRoleName},{PrincipalRoleName},{TeacherRoleName}")]
+        [Authorize(Roles = $"{AdministratorRoleName},{PrincipalRoleName},{TeacherRoleName}")]
         [HttpDelete]
         [Route("RemoveGrade/{userGradeId}")]
         public async Task<ActionResult> RemoveUserGrade(int userGradeId)
@@ -53,10 +53,10 @@
             return this.Ok();
         }
 
-        // [Authorize(Roles = $"{AdministratorRoleName},{PrincipalRoleName},{TeacherRoleName}")]
+        [Authorize(Roles = $"{AdministratorRoleName},{PrincipalRoleName},{TeacherRoleName}")]
         [HttpPut]
         [Route("EditGrade")]
-        public async Task<ActionResult> EditPresence([FromBody] EditGradeInputModel model)
+        public async Task<ActionResult> Edit([FromBody] EditGradeInputModel model)
         {
             if (!this.ModelState.IsValid)
             {

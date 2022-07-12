@@ -10,13 +10,10 @@
         [Required]
         public int Id { get; set; }
 
-        [Required]
         public DateTime DateOfGrade { get; set; }
 
-        [Required]
         public decimal Grade { get; set; }
 
-        [Required]
         public GradeType GradeType { get; set; }
     }
 }

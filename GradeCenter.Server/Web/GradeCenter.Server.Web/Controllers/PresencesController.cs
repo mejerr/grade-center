@@ -19,7 +19,7 @@
             this.absencesService = absencesService;
         }
 
-        // [Authorize(Roles = $"{AdministratorRoleName},{PrincipalRoleName},{TeacherRoleName}")]
+        [Authorize(Roles = $"{AdministratorRoleName},{PrincipalRoleName},{TeacherRoleName}")]
         [HttpPost]
         [Route("SetPresence")]
         public async Task<ActionResult> SetPresence([FromBody] PresenceInputModel model)
@@ -35,7 +35,7 @@
             return this.Created(nameof(this.SetPresence), id);
         }
 
-        // [Authorize(Roles = $"{AdministratorRoleName},{PrincipalRoleName},{TeacherRoleName}")]
+        [Authorize(Roles = $"{AdministratorRoleName},{PrincipalRoleName},{TeacherRoleName}")]
         [HttpDelete]
         [Route("RemovePresence/{userPresenceId}")]
         public async Task<ActionResult> RemovePresence(int userPresenceId)
@@ -54,7 +54,7 @@
             return this.Ok();
         }
 
-        // [Authorize(Roles = $"{AdministratorRoleName},{PrincipalRoleName},{TeacherRoleName}")]
+        [Authorize(Roles = $"{AdministratorRoleName},{PrincipalRoleName},{TeacherRoleName}")]
         [HttpPut]
         [Route("EditPresence")]
         public async Task<ActionResult> EditPresence([FromBody] EditPresenceInputModel model)
