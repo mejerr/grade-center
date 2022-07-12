@@ -21,7 +21,7 @@
 
         public async Task<T> GetByIdAsync<T>(int id)
         {
-            return await this.dbContext.Classes
+            return await this.dbContext.Curriculums
                 .Where(s => s.Id == id)
                 .To<T>()
                 .FirstOrDefaultAsync();

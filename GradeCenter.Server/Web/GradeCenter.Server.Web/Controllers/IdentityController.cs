@@ -34,7 +34,7 @@
             this.appSettings = appSettings.Value;
         }
 
-        // [Authorize(Roles = AdministratorRoleName)]
+        [Authorize(Roles = AdministratorRoleName)]
         [HttpPost]
         [Route("/Register")]
         public async Task<ActionResult> Register(RegisterInputModel model)
@@ -57,6 +57,7 @@
             return this.BadRequest(result.Errors);
         }
 
+        [Authorize]
         [HttpPost]
         [Route("/Login")]
         public async Task<ActionResult<object>> Login(LoginInputModel model)
@@ -81,7 +82,7 @@
             };
         }
 
-        // [Authorize(Roles = AdministratorRoleName)]
+        [Authorize(Roles = AdministratorRoleName)]
         [HttpPost]
         [Route("/SetRole/user/{userId}/role/{roleId}")]
         public async Task<ActionResult<object>> SetRole(string userId, string roleId)
@@ -107,7 +108,7 @@
             return result;
         }
 
-        // [Authorize(Roles = AdministratorRoleName)]
+        [Authorize(Roles = AdministratorRoleName)]
         [HttpPut]
         [Route("/Edit")]
         public async Task<ActionResult<object>> Edit(EditUserDataInputModel model)
@@ -134,7 +135,7 @@
             return this.BadRequest(result.Errors);
         }
 
-        // [Authorize(Roles = AdministratorRoleName)]
+        [Authorize(Roles = AdministratorRoleName)]
         [HttpPost]
         [Route("/RemoveDependent/superior/{userSuperiorId}/inferior/{userInferiorId}/role/{superiorRole}")]
         public async Task<ActionResult<object>> RemoveDependent(string userSuperiorId, string userInferiorId, string superiorRole)
@@ -164,10 +165,10 @@
             return this.Ok();
         }
 
-        // [Authorize(Roles = AdministratorRoleName)]
+        [Authorize(Roles = AdministratorRoleName)]
         [HttpPost]
-        [Route("/AddDependent/superior/{userSuperiorId}/inferior/{userInferiorId}/role/{superiorRole}")]
-        public async Task<ActionResult<object>> AddDependent(string userSuperiorId, string userInferiorId, string superiorRole)
+        [Route("/AddDependent/superior/{userSuperiorId}/inferior/{userInferiorId}/roleId/{superiorRoleId}")]
+        public async Task<ActionResult<object>> AddDependent(string userSuperiorId, string userInferiorId, string superiorRoleId)
         {
             if (userSuperiorId == null)
             {
@@ -179,12 +180,12 @@
                 return this.BadRequest();
             }
 
-            if (superiorRole == null)
+            if (superiorRoleId == null)
             {
                 return this.BadRequest();
             }
 
-            var role = await this.roleManager.FindByNameAsync(superiorRole);
+            var role = await this.roleManager.FindByIdAsync(superiorRoleId);
             if (role == null)
             {
                 return this.BadRequest();

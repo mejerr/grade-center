@@ -19,7 +19,7 @@
             this.classService = classService;
         }
 
-        // [Authorize(Roles = AdministratorRoleName)]
+        [Authorize(Roles = AdministratorRoleName)]
         [HttpPost]
         [Route("/Create")]
         public async Task<ActionResult> Create([FromBody] CreateClassInputModel model)
@@ -34,7 +34,7 @@
             return this.Created(nameof(this.Create), id);
         }
 
-        // [Authorize(Roles = $"{AdministratorRoleName},{PrincipalRoleName}")]
+        [Authorize(Roles = $"{AdministratorRoleName},{PrincipalRoleName}")]
         [HttpGet]
         [Route("Details/{id}")]
         public async Task<ActionResult<ClassViewModel>> Details(int id)
@@ -48,7 +48,7 @@
             return result;
         }
 
-        // [Authorize(Roles = AdministratorRoleName)]
+        [Authorize(Roles = AdministratorRoleName)]
         [HttpPut]
         [Route("Update/{id}")]
         public async Task<ActionResult> Update(int id, [FromBody] UpdateClassInputModel model)
@@ -67,7 +67,7 @@
             return this.Ok();
         }
 
-        // [Authorize(Roles = AdministratorRoleName)]
+        [Authorize(Roles = AdministratorRoleName)]
         [HttpDelete]
         [Route("Delete/{id}")]
         public async Task<ActionResult> Delete(int id)
@@ -81,7 +81,7 @@
             return this.Ok();
         }
 
-        // [Authorize(Roles = AdministratorRoleName)]
+        [Authorize(Roles = AdministratorRoleName)]
         [HttpGet]
         [Route("All")]
         public async Task<ActionResult> All()

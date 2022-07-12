@@ -232,7 +232,21 @@
                 UserRoleId = roleId,
             };
 
-            await this.dbContext.UsersRelations.AddAsync(userRelation);
+            var old = await this.dbContext.UsersRelations.IgnoreQueryFilters().FirstOrDefaultAsync(
+                ur => ur.UserSuperiorId == userRelation.UserSuperiorId
+                && ur.UserInferiorId == userRelation.UserInferiorId
+                && ur.UserRoleId == userRelation.UserRoleId);
+
+            if (old != null)
+            {
+                old.IsDeleted = false;
+                this.dbContext.UsersRelations.Update(old);
+            }
+            else
+            {
+                await this.dbContext.UsersRelations.AddAsync(userRelation);
+            }
+
             await this.dbContext.SaveChangesAsync();
 
             return true;

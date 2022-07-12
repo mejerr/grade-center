@@ -4,6 +4,7 @@
     using System.Threading.Tasks;
 
     using GradeCenter.Server.Services;
+    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
 
     using static GradeCenter.Server.Common.GlobalConstants.Data.Roles;
@@ -17,6 +18,7 @@
             this.userService = userService;
         }
 
+        [Authorize]
         [HttpPost]
         [Route("/AddToClass{userId}/{classId}")]
         public async Task<ActionResult> AddToClass(string userId, int? classId)
@@ -36,6 +38,7 @@
             return this.Ok(result);
         }
 
+        [Authorize]
         [HttpPost]
         [Route("/RemoveFromClass{userId}")]
         public async Task<ActionResult> RemoveFromClass(string userId)

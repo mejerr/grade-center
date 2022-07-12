@@ -15,21 +15,27 @@
 
         public int TotalDelays => this.AbsencesStatistics.Count(a => a.PresenceType == PresenceType.Late);
 
-        public int MostAbsences => this.GetAbsencesGroupedByStudent().Max(a => a.Count);
+        public int MostAbsences => this.GetAbsencesGroupedByStudent().Count() > 0
+            ? this.GetAbsencesGroupedByStudent().Max(a => a.Count)
+            : 0;
 
         public string StudentNameWithMostAbsences => this.GetAbsencesGroupedByStudent()
             .OrderByDescending(a => a.Count)
             .FirstOrDefault()
             ?.StudentName;
 
-        public int MostPresences => this.GetPresencesGroupedByStudent().Max(a => a.Count);
+        public int MostPresences => this.GetPresencesGroupedByStudent().Count() > 0
+            ? this.GetPresencesGroupedByStudent().Max(a => a.Count)
+            : 0;
 
         public string StudentNameWithMostPresences => this.GetPresencesGroupedByStudent()
             .OrderByDescending(a => a.Count)
             .FirstOrDefault()
             ?.StudentName;
 
-        public int MostDelays => this.GetDelaysGroupedByStudent().Max(a => a.Count);
+        public int MostDelays => this.GetDelaysGroupedByStudent().Count() > 0
+            ? this.GetDelaysGroupedByStudent().Max(a => a.Count)
+            : 0;
 
         public string StudentNameWithMostDelays => this.GetDelaysGroupedByStudent()
             .OrderByDescending(a => a.Count)

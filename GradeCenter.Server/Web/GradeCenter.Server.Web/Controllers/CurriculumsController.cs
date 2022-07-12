@@ -19,7 +19,7 @@
             this.curriculumService = curriculumService;
         }
 
-        // [Authorize(Roles = AdministratorRoleName)]
+        [Authorize(Roles = AdministratorRoleName)]
         [HttpPost]
         [Route("Create")]
         public async Task<ActionResult> Create([FromBody] CreateCurriculumInputModel model)
@@ -34,6 +34,7 @@
             return this.Created(nameof(this.Create), result);
         }
 
+        [Authorize]
         [HttpGet]
         [Route("Details/{id}")]
         public async Task<ActionResult<CurriculumViewModel>> Details(int id)
@@ -47,7 +48,7 @@
             return result;
         }
 
-        // [Authorize(Roles = $"{AdministratorRoleName},{PrincipalRoleName}")]
+        [Authorize(Roles = $"{AdministratorRoleName},{PrincipalRoleName}")]
         [HttpPut]
         [Route("Update/{id}")]
         public async Task<ActionResult> Update(int id, [FromBody] UpdateCurriculumInputModel model)
@@ -66,7 +67,7 @@
             return this.Ok();
         }
 
-        // [Authorize(Roles = $"{AdministratorRoleName},{PrincipalRoleName}")]
+        [Authorize(Roles = $"{AdministratorRoleName},{PrincipalRoleName}")]
         [HttpDelete]
         [Route("Delete/{id}")]
         public async Task<ActionResult> Delete(int id)
@@ -80,6 +81,7 @@
             return this.Ok();
         }
 
+        [Authorize]
         [HttpGet]
         public async Task<ActionResult> All()
         {
